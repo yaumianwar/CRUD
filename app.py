@@ -12,17 +12,17 @@ database.init_app(app)
 @app.route("/polls")
 def allpolls():
     # Polls.query.all() == select*from polls(tablename)
-	polls = Polls.query.all()
-	return render_template("polls.html",  **locals())
+    polls = Polls.query.all()
+    return render_template("polls.html",  **locals())
 
 # show one poll by id
 @app.route("/polls/:id")
 def poll(id):
     # Post.query.get(id) == select*from where id = ''
-	poll = Polls.query.get(id)
-	if not poll:
-		abort(404)
-	return render_template("user_poll.html",  **locals())
+    poll = Polls.query.get(id)
+    if not poll:
+        abort(404)
+    return render_template("user_poll.html",  **locals())
 
 # create poll
 @app.route("/polls/add", methods=["POST", "GET"])

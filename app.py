@@ -18,7 +18,7 @@ def allpolls():
 # show one poll by id
 @app.route("/polls/:id")
 def poll(id):
-    # Post.query.get(id) == select*from where id = ''
+    # Post.query.get(id) == select*from polls(tablename) where id = ''
     poll = Polls.query.get(id)
     if not poll:
         abort(404)

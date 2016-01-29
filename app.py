@@ -38,3 +38,27 @@ def addpoll():
         return redirect("somewhere")
 
     return render_template("index.html", **locals())
+
+# update data by id
+@app.route("/polls/update/:id")
+def updatepoll(id):
+    poll = Polls.query.get(id)
+    database.session.add(poll)
+    database.session.commit()
+    return redirect("somewhere")
+
+    return render_template("index.html", **locals())
+
+
+# delete data by id
+@app.route("/polls/delete/:id")
+def deletepoll(id):
+    poll = Polls.query.get(id)
+    database.session.delete(poll)
+    database.session.commit()
+    return redirect("somewhere")
+
+    return render_template("index.html", **locals())
+
+if __name__=="__main__":
+	app.run(debug=True)

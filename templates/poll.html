@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>CRUD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Poll</h1>
+      <br>
+      <h3><a href="/polls/update/{{polls.id}}">Update Poll</a></h3>
+      <h3><a href="/polls/delete/{{polls.id}}">Delete polls</a></h3>
+      <br>
+      <h3>{{polls.name}}</h3>
+      <h5>Candidate: {{polls.candidate}}</a></h5>
+    </div>
+  </body>
+</html>

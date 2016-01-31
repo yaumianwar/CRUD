@@ -1,5 +1,5 @@
 import datetime
-from flask import render_template, redirect, session
+from flask import Flask, render_template, redirect, session, request
 from db import database
 from models import Polls
 
@@ -7,6 +7,9 @@ app = Flask(__name__)
 app.config.from_object('config')
 database.init_app(app)
 
+@app.route("/")
+def home():
+    return render_template("index.html", **locals())
 
 # show all polls
 @app.route("/polls")
@@ -16,13 +19,13 @@ def allpolls():
     return render_template("polls.html",  **locals())
 
 # show one poll by id
-@app.route("/polls/:id")
+@app.route("/polls/<int:id>")
 def poll(id):
     # Post.query.get(id) == select*from polls(tablename) where id = ''
-    poll = Polls.query.get(id)
-    if not poll:
+    polls = Polls.query.get(id)
+    if not polls:
         abort(404)
-    return render_template("user_poll.html",  **locals())
+    return render_template("poll.html",  **locals())
 
 # create poll
 @app.route("/polls/add", methods=["POST", "GET"])
@@ -35,30 +38,32 @@ def addpoll():
         polls.createdtime = datetime.datetime.now()
         database.session.add(polls)
         database.session.commit()
-        return redirect("somewhere")
+        return render_template("polls.html")
 
-    return render_template("index.html", **locals())
+    return render_template("choose.html", **locals())
 
 # update data by id
-@app.route("/polls/update/:id")
+@app.route("/polls/update/<int:id>", methods=["POST", "GET"])
 def updatepoll(id):
-    poll = Polls.query.get(id)
-    database.session.add(poll)
-    database.session.commit()
-    return redirect("somewhere")
+    if request.method == "POST":
+        newcandidate = request.form.get("candidate",None)
+        polls = Polls.query.get(id)
+        polls.candidate = newcandidate
+        database.session.add(polls)
+        database.session.commit()
+        return render_template("poll.html", **locals())
 
-    return render_template("index.html", **locals())
+    return render_template("update_poll.html", **locals())
 
 
 # delete data by id
-@app.route("/polls/delete/:id")
+@app.route("/polls/delete/<int:id>")
 def deletepoll(id):
-    poll = Polls.query.get(id)
-    database.session.delete(poll)
+    polls = Polls.query.get(id)
+    database.session.delete(polls)
     database.session.commit()
-    return redirect("somewhere")
 
-    return render_template("index.html", **locals())
+    return render_template("polls.html", **locals())
 
 if __name__=="__main__":
 	app.run(debug=True)

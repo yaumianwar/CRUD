@@ -6,13 +6,15 @@
   </head>
   <body>
     <div class="container">
-      <h1>Update Poll</h1>
+      <h1>choose your candidate</h1>
       <br>
       <h3>Candidate</h3>
       <h6>1. Nur Yaumi</h6>
       <h6>2. Nur</h6>
       <h6>3. Yaumi</h6>
-      <form action="/polls/update/{{polls.id}}" method="post">
+      <form action="/pollsadd" method="post">
+        <input type="text" placeholder="name" name="name" value="{{
+          request.form.name}}">
         <input type="text" placeholder="candidate name" name="candidate" value="{{
           request.form.candidate }}">
         <input class="btn btn-default" type="submit" value="Poll">

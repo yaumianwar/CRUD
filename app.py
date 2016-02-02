@@ -64,7 +64,7 @@ def deletepoll(id):
     database.session.delete(polls)
     database.session.commit()
 
-    return render_template("index.html", **locals())
+    return redirect("/polls")
 
 if __name__=="__main__":
 	app.run(debug=True)

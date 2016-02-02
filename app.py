@@ -28,7 +28,7 @@ def poll(id):
     return render_template("poll.html",  **locals())
 
 # create poll
-@app.route("/polls/add", methods=["POST", "GET"])
+@app.route("/pollsadd", methods=["POST", "GET"])
 def addpoll():
     if request.method == "POST":
         name = request.form.get("name", None)
@@ -38,12 +38,12 @@ def addpoll():
         polls.createdtime = datetime.datetime.now()
         database.session.add(polls)
         database.session.commit()
-        return render_template("polls.html")
+        return redirect("/polls")
 
-    return render_template("choose.html", **locals())
+    return render_template("pollsadd.html", **locals())
 
 # update data by id
-@app.route("/polls/update/<int:id>", methods=["POST", "GET"])
+@app.route("/pollsupdate/<int:id>", methods=["POST", "GET"])
 def updatepoll(id):
     if request.method == "POST":
         newcandidate = request.form.get("candidate",None)
@@ -52,18 +52,19 @@ def updatepoll(id):
         database.session.add(polls)
         database.session.commit()
         return render_template("poll.html", **locals())
+    polls = Polls.query.get(id)
 
-    return render_template("update_poll.html", **locals())
+    return render_template("pollsupdate.html", **locals())
 
 
 # delete data by id
-@app.route("/polls/delete/<int:id>")
+@app.route("/pollsdelete/<int:id>")
 def deletepoll(id):
     polls = Polls.query.get(id)
     database.session.delete(polls)
     database.session.commit()
 
-    return render_template("polls.html", **locals())
+    return render_template("index.html", **locals())
 
 if __name__=="__main__":
 	app.run(debug=True)
